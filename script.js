@@ -91,16 +91,26 @@ let AllSong = [
 function loadTrack(index_no) {
     clearInterval(timer)
     resetSlider()
-
+    console.dir(track)
     track.src = AllSong[index_no].url
     title.innerHTML = AllSong[index_no].title
     trackImage.src = AllSong[index_no].artwork
     artist.innerHTML = AllSong[index_no].artist
     track.load()
 
-    timer = setInterval(rangeSlider, 1000)
+    timer = setInterval(seekto, 1000)
     total.innerHTML = AllSong.length
     present.innerHTML = +index_no + 1
+
+    function updatePositionState() {
+        if ('setPositionState' in navigator.mediaSession) {
+            navigator.mediaSession.setPositionState({
+                duration: track.duration,
+                playbackRate: track.playbackRate,
+                position: track.currentTime,
+            });
+        }
+    }
 
     if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -120,6 +130,43 @@ function loadTrack(index_no) {
         navigator.mediaSession.setActionHandler('pause', pauseSong);
         navigator.mediaSession.setActionHandler('previoustrack', previoustrack);
         navigator.mediaSession.setActionHandler('nexttrack', nexttrack);
+
+        let defaultSkipTime = 10; /* Time to skip in seconds by default */
+
+        navigator.mediaSession.setActionHandler('seekbackward', function (event) {
+            console.log('> User clicked "Seek Backward" icon.');
+            const skipTime = event.seekOffset || defaultSkipTime;
+            track.currentTime = Math.max(track.currentTime - skipTime, 0);
+            updatePositionState();
+        });
+
+        navigator.mediaSession.setActionHandler('seekforward', function (event) {
+            console.log('> User clicked "Seek Forward" icon.');
+            const skipTime = event.seekOffset || defaultSkipTime;
+            track.currentTime = Math.min(track.currentTime + skipTime, track.duration);
+            updatePositionState();
+        });
+
+        /* Seek To (supported since Chrome 78) */
+
+        try {
+            navigator.mediaSession.setActionHandler('seekto', function (event) {
+                log('> User clicked "Seek To" icon.');
+                if (event.fastSeek && ('fastSeek' in track)) {
+                    track.fastSeek(event.seekTime);
+                    return;
+                }
+                track.currentTime = event.seekTime;
+                updatePositionState();
+            });
+        } catch (error) {
+            log('Warning! The "seekto" media session action is not supported.');
+        }
+
+// When video playback rate changes, update position state.
+        track.addEventListener('ratechange', (event) => {
+            updatePositionState();
+        });
     }
 
 }
@@ -197,7 +244,7 @@ function autoplaySwitch() {
     autoPlay.style.background = autoplay !== 0 ? '#FF8A65' : 'rgba(255,255,255,0.2)'
 }
 
-function rangeSlider() {
+function seekto() {
     let position = 0
 
     // update slider position
