@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>music player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+
+<body>
+<div class="main">
+    <div class="head">
+        <p id="logo"><i class="fa fa-music"></i>luksiko Music</p>
+        <div class="show_song_no">
+            <p id="present">1</p>
+            <p>/</p>
+            <p id="total">5</p>
+        </div>
+    </div>
+
+    <div class="right">
+        <!-- - song title & artist name - -->
+        <marquee width="50%"><p id="title">title.mp3</p></marquee>
+        <p id="artist">Artist name</p>
+        <img id="track_image" alt="Artist name" />
+        <div class="sound_list" hidden>
+            <div id="jplayer_playlist" class="jp-playlist playlist clearfix">
+                <span class="close">&times;</span>
+                <ol class="playlist_ol"></ol>
+            </div>
+        </div>
+        <!-- - middle part - -->
+        <div class="middle">
+            <button id="auto">
+                <img src="redo.svg" width="20px" full="#fff" alt=""/>
+            </button>
+            <button id="pre">
+                <i class="fa fa-step-backward" aria-hidden="true"></i>
+            </button>
+            <button id="play"><i class="fa fa-play" aria-hidden="true"></i></button>
+            <button id="next"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
+            <button id="burger"><i class="fa fa-bars"></i></button>
+        </div>
+
+        <!-- - song duration part - -->
+        <div class="duration_meter">
+            <div id="current_time">0:00</div>
+            <div id="duration_time">0:00</div>
+        </div>
+        <div class="duration">
+            <input type="range" min="0" max="100" value="0" id="duration_slider"/>
+        </div>
+        <div class="volume">
+            <i class="fa fa-volume-up" aria-hidden="true" id="volume_icon"></i>
+            <label for="volume"></label><input type="range" min="0" max="100" value="90" id="volume"/>
+            <p id="volume_show">90</p>
+        </div>
+    </div>
+</div>
+
+<!-- - Add javascript file - -->
+<script src="script.js" defer></script>
+</body>
+</html>
