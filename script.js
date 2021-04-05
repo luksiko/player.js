@@ -28,14 +28,13 @@ let shuffle = 0
 
 let indexNo = 0
 let PlayingSong = false
-
 //create a audio Element
 let track = document.createElement('audio')
 
 //All songs list
 let AllSong = [
     {
-        title: 'Death 0',
+        title: 'Death All ',
         artist: 'luksiko',
         artwork: 'https://samplesongs.netlify.app/album-arts/solo.jpg',
         url: 'https://samplesongs.netlify.app/Death%20Bed.mp3',
@@ -101,6 +100,10 @@ function loadTrack(index_no) {
     timer = setInterval(seekto, 1000)
     total.innerHTML = AllSong.length
     present.innerHTML = +index_no + 1
+    loadMediaSession(indexNo)
+}
+
+function loadMediaSession(index_no) {
 
     function updatePositionState() {
         if ('setPositionState' in navigator.mediaSession) {
@@ -148,10 +151,8 @@ function loadTrack(index_no) {
         });
 
         /* Seek To (supported since Chrome 78) */
-
         try {
             navigator.mediaSession.setActionHandler('seekto', function (event) {
-                log('> User clicked "Seek To" icon.');
                 if (event.fastSeek && ('fastSeek' in track)) {
                     track.fastSeek(event.seekTime);
                     return;
@@ -160,7 +161,7 @@ function loadTrack(index_no) {
                 updatePositionState();
             });
         } catch (error) {
-            log('Warning! The "seekto" media session action is not supported.');
+            console.log('Warning! The "seekto" media session action is not supported.');
         }
 
 // When video playback rate changes, update position state.
@@ -168,10 +169,7 @@ function loadTrack(index_no) {
             updatePositionState();
         });
     }
-
 }
-
-loadTrack(indexNo)
 
 //mute sound function
 function muteSound() {
@@ -222,9 +220,8 @@ function previoustrack() {
 function volumeChange() {
     volumeShow.innerHTML = recentVolume.value
     if (recentVolume.value < 10) {
-        volumeShow.innerHTML = 0 + recentVolume.value
+        volumeShow.innerHTML = `0${recentVolume.value}`
     }
-
     track.volume = recentVolume.value / 100
 }
 
@@ -301,8 +298,6 @@ function openTrackList() {
     }
 }
 
-openTrackList()
-
 soundList.addEventListener('click', e => {
     const target = e.target
     if (target.classList.contains('jplayer_playlist_current')) {
@@ -322,24 +317,6 @@ slider.addEventListener('change', changeDuration)
 burger.addEventListener('click', listTrigger)
 closeList.addEventListener('click', listTrigger)
 
+loadTrack(indexNo)
 
-//
-// if ('mediaSession' in navigator) {
-//     navigator.mediaSession.metadata = new MediaMetadata({
-//         title: "TITLE",
-//         artist: "ARTIST",
-//         album: "ALBUM",
-//         artwork: [{
-//             sizes: "320x180",// <- MUST BE EXACTLY!
-//             src: "https://i.ytimg.com/vi/yAruCvT7P7Y/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAfHWw5BHrQugGsdPYy4eIXcqMTnQ",
-//             type: ""
-//         }]
-//     });
-//
-//     navigator.mediaSession.setActionHandler('play', function () { });
-//     navigator.mediaSession.setActionHandler('pause', function () { });
-//     // navigator.mediaSession.setActionHandler('seekbackward', function () { });
-//     // navigator.mediaSession.setActionHandler('seekforward', function () { });
-//     navigator.mediaSession.setActionHandler('previousSong', function () { });
-//     navigator.mediaSession.setActionHandler('nextSong', function () { });
-// }
+openTrackList()
