@@ -11,7 +11,6 @@ const volumeShow = document.querySelector('#volume_show')
 const slider = document.querySelector('#duration_slider')
 const showDuration = document.querySelector('#show_duration')
 const trackImage = document.querySelector('#track_image')
-const autoPlay = document.querySelector('#auto')
 const present = document.querySelector('#present')
 const total = document.querySelector('#total')
 const artist = document.querySelector('#artist')
@@ -34,7 +33,7 @@ let track = document.createElement('audio')
 //All songs list
 let AllSong = [
     {
-        title: 'Death All ',
+        title: 'Death Al ',
         artist: 'luksiko',
         artwork: 'https://samplesongs.netlify.app/album-arts/solo.jpg',
         url: 'https://samplesongs.netlify.app/Death%20Bed.mp3',
@@ -238,7 +237,7 @@ function autoplaySwitch() {
     } else {
         autoplay = 1
     }
-    autoPlay.style.background = autoplay !== 0 ? '#FF8A65' : 'rgba(255,255,255,0.2)'
+    autoBtn.style.background = autoplay !== 0 ? '#FF8A65' : 'rgba(255,255,255,0.2)'
 }
 
 function seekto() {
