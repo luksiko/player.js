@@ -3,4 +3,5 @@
 
 ## Tasks: Playback, animations, easy access to the Playlist, volume control. Chose at the end of a track, auto-repeat or next track.
 
-### https://luksiko.github.io/player.js/
+### Preview: https://luksiko.github.io/player.js/
+### Site where my code was used: https://www.kazmuz.kz
